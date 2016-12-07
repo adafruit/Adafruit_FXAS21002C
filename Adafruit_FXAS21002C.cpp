@@ -62,7 +62,7 @@ byte Adafruit_FXAS21002C::read8(byte reg)
   #else
     Wire.send(reg);
   #endif
-  Wire.endTransmission();
+  if (Wire.endTransmission(false) != 0) return 0;
   Wire.requestFrom((byte)FXAS21002C_ADDRESS, (byte)1);
   while (!Wire.available()); // Wait for data to arrive.
   #if ARDUINO >= 100
@@ -70,7 +70,6 @@ byte Adafruit_FXAS21002C::read8(byte reg)
   #else
     value = Wire.receive();
   #endif
-  Wire.endTransmission();
 
   return value;
 }
@@ -113,25 +112,33 @@ bool Adafruit_FXAS21002C::begin(gyroRange_t rng)
   /* Make sure we have the correct chip ID since this checks
      for correct address and that the IC is properly connected */
   uint8_t id = read8(GYRO_REGISTER_WHO_AM_I);
+  // Serial.print("WHO AM I? 0x"); Serial.println(id, HEX);
   if (id != FXAS21002C_ID)
   {
     return false;
   }
 
-  /* Set CTRL_REG1 (0x20)
+  /* Set CTRL_REG1 (0x13)
    ====================================================================
    BIT  Symbol    Description                                   Default
    ---  ------    --------------------------------------------- -------
-   7-6  DR1/0     Output data rate                                   00
-   5-4  BW1/0     Bandwidth selection                                00
-     3  PD        0 = Power-down mode, 1 = normal/sleep mode          0
-     2  ZEN       Z-axis enable (0 = disabled, 1 = enabled)           1
-     1  YEN       Y-axis enable (0 = disabled, 1 = enabled)           1
-     0  XEN       X-axis enable (0 = disabled, 1 = enabled)           1 */
+     6  RESET     Reset device on 1                                   0
+     5  ST        Self test enabled on 1                              0
+   4:2  DR        Output data rate                                  000
+                  000 = 800 Hz
+                  001 = 400 Hz
+                  010 = 200 Hz
+                  011 = 100 Hz
+                  100 = 50 Hz
+                  101 = 25 Hz
+                  110 = 12.5 Hz
+                  111 = 12.5 Hz
+     1  ACTIVE    Standby(0)/Active(1)                                0
+     0  READY     Standby(0)/Ready(1)                                 0
 
-  /* Reset then switch to normal mode and enable all three channels */
-  //write8(GYRO_REGISTER_CTRL_REG1, 0x00);
-  //write8(GYRO_REGISTER_CTRL_REG1, 0x0F);
+  /* Reset then switch to active mode with 100Hz output */
+  write8(GYRO_REGISTER_CTRL_REG1, (1<<6));
+  write8(GYRO_REGISTER_CTRL_REG1, 0x0E);
   /* ------------------------------------------------------------------ */
 
   return true;

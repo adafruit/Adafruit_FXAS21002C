@@ -12,7 +12,7 @@ void displaySensorDetails(void)
   Serial.println("------------------------------------");
   Serial.print  ("Sensor:       "); Serial.println(sensor.name);
   Serial.print  ("Driver Ver:   "); Serial.println(sensor.version);
-  Serial.print  ("Unique ID:    "); Serial.println(sensor.sensor_id);
+  Serial.print  ("Unique ID:    0x"); Serial.println(sensor.sensor_id, HEX);
   Serial.print  ("Max Value:    "); Serial.print(sensor.max_value); Serial.println(" rad/s");
   Serial.print  ("Min Value:    "); Serial.print(sensor.min_value); Serial.println(" rad/s");
   Serial.print  ("Resolution:   "); Serial.print(sensor.resolution); Serial.println(" rad/s");
@@ -24,10 +24,13 @@ void displaySensorDetails(void)
 void setup(void)
 {
   Serial.begin(9600);
-  Serial.println("Gyroscope Test"); Serial.println("");
 
-  /* Enable auto-ranging */
-  gyro.enableAutoRange(true);
+  /* Wait for the Serial Monitor */
+  while (!Serial) {
+    delay(1);
+  }
+
+  Serial.println("Gyroscope Test"); Serial.println("");
 
   /* Initialise the sensor */
   if(!gyro.begin())

@@ -49,7 +49,9 @@
       GYRO_REGISTER_OUT_Y_LSB           = 0x04,
       GYRO_REGISTER_OUT_Z_MSB           = 0x05,
       GYRO_REGISTER_OUT_Z_LSB           = 0x06,
-      GYRO_REGISTER_WHO_AM_I            = 0x0C    // 11010111   r
+      GYRO_REGISTER_WHO_AM_I            = 0x0C,   // 11010111   r
+      GYRO_REGISTER_CTRL_REG0           = 0x0D,   // 00000000   r/w
+      GYRO_REGISTER_CTRL_REG1           = 0x13,   // 00000000   r/w
     } gyroRegisters_t;
 /*=========================================================================*/
 
