@@ -178,26 +178,26 @@ bool Adafruit_FXAS21002C::getEvent(sensors_event_t* event)
 
   #if ARDUINO >= 100
     uint8_t status = Wire.read();
-    uint8_t xlo = Wire.read();
     uint8_t xhi = Wire.read();
-    uint8_t ylo = Wire.read();
+    uint8_t xlo = Wire.read();
     uint8_t yhi = Wire.read();
-    uint8_t zlo = Wire.read();
+    uint8_t ylo = Wire.read();
     uint8_t zhi = Wire.read();
+    uint8_t zlo = Wire.read();
   #else
     uint8_t status = Wire.receive();
-    uint8_t xlo = Wire.receive();
     uint8_t xhi = Wire.receive();
-    uint8_t ylo = Wire.receive();
+    uint8_t xlo = Wire.receive();
     uint8_t yhi = Wire.receive();
-    uint8_t zlo = Wire.receive();
+    uint8_t ylo = Wire.receive();
     uint8_t zhi = Wire.receive();
+    uint8_t zlo = Wire.receive();
   #endif
 
-  /* Shift values to create properly formed integer (low byte first) */
-  event->gyro.x = (int16_t)(xlo | (xhi << 8));
-  event->gyro.y = (int16_t)(ylo | (yhi << 8));
-  event->gyro.z = (int16_t)(zlo | (zhi << 8));
+  /* Shift values to create properly formed integer */
+  event->gyro.x = (int16_t)((xhi << 8) | xlo);
+  event->gyro.y = (int16_t)((yhi << 8) | ylo);
+  event->gyro.z = (int16_t)((zhi << 8) | zlo);
 
   /* Assign raw values in case someone needs them */
   raw.x = event->gyro.x;
