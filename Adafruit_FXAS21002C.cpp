@@ -64,7 +64,6 @@ byte Adafruit_FXAS21002C::read8(byte reg)
   #endif
   if (Wire.endTransmission(false) != 0) return 0;
   Wire.requestFrom((byte)FXAS21002C_ADDRESS, (byte)1);
-  while (!Wire.available()); // Wait for data to arrive.
   #if ARDUINO >= 100
     value = Wire.read();
   #else
