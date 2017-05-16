@@ -31,10 +31,10 @@
     -----------------------------------------------------------------------*/
     #define FXAS21002C_ADDRESS       (0x21)       // 0100001
     #define FXAS21002C_ID            (0xD7)       // 1101 0111
-    #define GYRO_SENSITIVITY_250DPS  (0.0625F)    // Page 9 of NXP datasheet FXAS21002C
-    #define GYRO_SENSITIVITY_500DPS  (0.03125F)   // ..
-    #define GYRO_SENSITIVITY_1000DPS (0.015625F)  // ..
-    #define GYRO_SENSITIVITY_2000DPS (0.0078125F) // ..
+    #define GYRO_SENSITIVITY_250DPS  (0.0078125F) // Table 35 of datasheet
+    #define GYRO_SENSITIVITY_500DPS  (0.015625F)  // ..
+    #define GYRO_SENSITIVITY_1000DPS (0.03125F)   // ..
+    #define GYRO_SENSITIVITY_2000DPS (0.0625F)    // ..
 /*=========================================================================*/
 
 /*=========================================================================
