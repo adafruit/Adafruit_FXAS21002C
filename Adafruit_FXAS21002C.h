@@ -88,6 +88,8 @@ class Adafruit_FXAS21002C : public Adafruit_Sensor
     bool getEvent        ( sensors_event_t* );
     void getSensor       ( sensor_t* );
 
+    void standby         ( boolean standby );
+
     gyroRawData_t raw; /* Raw values from last sensor read */
 
   private:
