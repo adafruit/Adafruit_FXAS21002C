@@ -92,7 +92,7 @@ Adafruit_FXAS21002C::Adafruit_FXAS21002C(int32_t sensorID) {
 
 /**************************************************************************/
 /*!
-    @brief  Setups the HW
+    @brief  Setup the HW
 */
 /**************************************************************************/
 bool Adafruit_FXAS21002C::begin(gyroRange_t rng)
@@ -134,13 +134,47 @@ bool Adafruit_FXAS21002C::begin(gyroRange_t rng)
                   111 = 12.5 Hz
      1  ACTIVE    Standby(0)/Active(1)                                0
      0  READY     Standby(0)/Ready(1)                                 0
+  */
+
+  /* Set CTRL_REG0 (0x0D)  Default value 0x00
+  =====================================================================
+  BIT  Symbol     Description                                   Default
+  7:6  BW         cut-off frequency of low-pass filter               00
+    5  SPIW       SPI interface mode selection                        0
+  4:3  SEL        High-pass filter cutoff frequency selection        00
+    2  HPF_EN     High-pass filter enable                             0
+  1:0  FS         Full-scale range selection
+                  00 = +-2000 dps
+                  01 = +-1000 dps
+                  10 = +-500 dps
+                  11 = +-250 dps
+  The bit fields in CTRL_REG0 should be changed only in Standby or Ready modes.
+  */
+
+  uint8_t ctrlReg0 = 0x00;
+
+  switch(_range)
+  {
+    case GYRO_RANGE_250DPS:
+      ctrlReg0 = 0x03;
+      break;
+    case GYRO_RANGE_500DPS:
+     ctrlReg0 = 0x02;
+      break;
+    case GYRO_RANGE_1000DPS:
+      ctrlReg0 = 0x01;
+      break;
+    case GYRO_RANGE_2000DPS:
+      ctrlReg0 = 0x00;
+      break;
+  }
 
   /* Reset then switch to active mode with 100Hz output */
-  write8(GYRO_REGISTER_CTRL_REG1, 0x00);
-  write8(GYRO_REGISTER_CTRL_REG1, (1<<6));
-  write8(GYRO_REGISTER_CTRL_REG1, 0x0E);
+  write8(GYRO_REGISTER_CTRL_REG1, 0x00);     // Standby
+  write8(GYRO_REGISTER_CTRL_REG1, (1<<6));   // Reset
+  write8(GYRO_REGISTER_CTRL_REG0, ctrlReg0); // Set sensitivity
+  write8(GYRO_REGISTER_CTRL_REG1, 0x0E);     // Active
   delay(100); // 60 ms + 1/ODR
-  /* ------------------------------------------------------------------ */
 
   return true;
 }
