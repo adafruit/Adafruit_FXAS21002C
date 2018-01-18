@@ -1,4 +1,4 @@
-# Adafruit FXAS21002C Library [![Build Status](https://travis-ci.org/adafruit/Adafruit_FXAS21001C.svg?branch=master)](https://travis-ci.org/adafruit/Adafruit_FXAS21001C)
+# Adafruit FXAS21002C Library [![Build Status](https://travis-ci.org/adafruit/Adafruit_FXAS21002C.svg?branch=master)](https://travis-ci.org/adafruit/Adafruit_FXAS21002C)
 
 Driver for the [Adafruit FXAS21001C Gyroscope Breakout](https://www.adafruit.com/product/3463)
 
