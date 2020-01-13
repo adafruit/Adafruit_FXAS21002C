@@ -336,6 +336,7 @@ void  Adafruit_FXAS21002C::getSensor(sensor_t* sensor)
 /**************************************************************************/
 /*!
     @brief  Puts devince into/out of standby mode
+    @param  standby Whether we want to go into standby!
 */
 /**************************************************************************/
 void Adafruit_FXAS21002C::standby         ( boolean standby ) {
