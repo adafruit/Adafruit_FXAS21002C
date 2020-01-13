@@ -1,19 +1,36 @@
-/***************************************************
-  This is a library for the FXAS21002C GYROSCOPE
-
-  Designed specifically to work with the Adafruit FXAS21002C Breakout
-  ----> https://www.adafruit.com/products/
-
-  These sensors use I2C to communicate, 2 pins (I2C)
-  are required to interface.
-
-  Adafruit invests time and resources providing this open source code,
-  please support Adafruit and open-source hardware by purchasing
-  products from Adafruit!
-
-  Written by Kevin "KTOWN" Townsend for Adafruit Industries.
-  BSD license, all text above must be included in any redistribution
- ****************************************************/
+/*!
+ * @file Adafruit_FXAS21002C.cpp
+ *
+ * @mainpage Adafruit FXAS21002C gyroscope sensor driver
+ *
+ * @section intro_sec Introduction
+ *
+ * This is the documentation for Adafruit's FXAS21002C driver for the
+ * Arduino platform.  It is designed specifically to work with the
+ * Adafruit FXAS21002C breakout: https://www.adafruit.com/products/3463
+ *
+ * These sensors use I2C to communicate, 2 pins (SCL+SDA) are required
+ * to interface with the breakout.
+ *
+ * Adafruit invests time and resources providing this open source code,
+ * please support Adafruit and open-source hardware by purchasing
+ * products from Adafruit!
+ *
+ * @section dependencies Dependencies
+ *
+ * This library depends on <a href="https://github.com/adafruit/Adafruit_Sensor">
+ * Adafruit_Sensor</a> being present on your system. Please make sure you have
+ * installed the latest version before using this library.
+ *
+ * @section author Author
+ *
+ * Written by Kevin "KTOWN" Townsend for Adafruit Industries.
+ *
+ * @section license License
+ *
+ * MIT license, all text here must be included in any redistribution.
+ *
+ */
 #if ARDUINO >= 100
  #include "Arduino.h"
 #else
@@ -32,6 +49,8 @@
 /**************************************************************************/
 /*!
     @brief  Abstract away platform differences in Arduino wire library
+    @param reg The register address to write to
+    @param value The value to write to the specified register
 */
 /**************************************************************************/
 void Adafruit_FXAS21002C::write8(byte reg, byte value)
@@ -50,6 +69,8 @@ void Adafruit_FXAS21002C::write8(byte reg, byte value)
 /**************************************************************************/
 /*!
     @brief  Abstract away platform differences in Arduino wire library
+    @param reg The register address to read from
+    @returns The byte read from the I2C bus at the specified reg
 */
 /**************************************************************************/
 byte Adafruit_FXAS21002C::read8(byte reg)
@@ -79,7 +100,10 @@ byte Adafruit_FXAS21002C::read8(byte reg)
 
 /**************************************************************************/
 /*!
-    @brief  Instantiates a new Adafruit_FXAS21002C class
+    @brief  Instantiates a new Adafruit_FXAS21002C class, including assigning
+            a unique ID to the gyroscope for logging purposes.
+
+    @param sensorID The unique ID to associate with the gyroscope.
 */
 /**************************************************************************/
 Adafruit_FXAS21002C::Adafruit_FXAS21002C(int32_t sensorID) {
@@ -93,6 +117,11 @@ Adafruit_FXAS21002C::Adafruit_FXAS21002C(int32_t sensorID) {
 /**************************************************************************/
 /*!
     @brief  Setup the HW
+
+    @param  rng
+            The range to set for the gyroscope, based on gyroRange_t
+
+    @return True if the device was successfully initialized, otherwise false.
 */
 /**************************************************************************/
 bool Adafruit_FXAS21002C::begin(gyroRange_t rng)
@@ -182,6 +211,12 @@ bool Adafruit_FXAS21002C::begin(gyroRange_t rng)
 /**************************************************************************/
 /*!
     @brief  Gets the most recent sensor event
+
+    @param[out] event
+                A reference to the sensors_event_t instances where the
+                accelerometer data should be written.
+
+     @return True if the event was successfully read, otherwise false.
 */
 /**************************************************************************/
 bool Adafruit_FXAS21002C::getEvent(sensors_event_t* event)
@@ -275,6 +310,10 @@ bool Adafruit_FXAS21002C::getEvent(sensors_event_t* event)
 /**************************************************************************/
 /*!
     @brief  Gets the sensor_t data
+
+    @param[out] sensor
+                A reference to the sensor_t instances where the
+                gyroscope sensor info should be written.
 */
 /**************************************************************************/
 void  Adafruit_FXAS21002C::getSensor(sensor_t* sensor)
