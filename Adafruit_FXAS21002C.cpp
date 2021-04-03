@@ -55,7 +55,7 @@
 */
 /**************************************************************************/
 void Adafruit_FXAS21002C::write8(byte reg, byte value) {
-  Wire.beginTransmission(FXAS21002C_ADDRESS);
+  Wire.beginTransmission(_sensorAddr);
 #if ARDUINO >= 100
   Wire.write((uint8_t)reg);
   Wire.write((uint8_t)value);
@@ -76,7 +76,7 @@ void Adafruit_FXAS21002C::write8(byte reg, byte value) {
 byte Adafruit_FXAS21002C::read8(byte reg) {
   byte value;
 
-  Wire.beginTransmission((byte)FXAS21002C_ADDRESS);
+  Wire.beginTransmission((byte)_sensorAddr);
 #if ARDUINO >= 100
   Wire.write((uint8_t)reg);
 #else
@@ -84,7 +84,7 @@ byte Adafruit_FXAS21002C::read8(byte reg) {
 #endif
   if (Wire.endTransmission(false) != 0)
     return 0;
-  Wire.requestFrom((byte)FXAS21002C_ADDRESS, (byte)1);
+  Wire.requestFrom((byte)_sensorAddr, (byte)1);
 #if ARDUINO >= 100
   value = Wire.read();
 #else
@@ -104,10 +104,12 @@ byte Adafruit_FXAS21002C::read8(byte reg) {
             a unique ID to the gyroscope for logging purposes.
 
     @param sensorID The unique ID to associate with the gyroscope.
+    @param addr The I2C address of the sensor.
 */
 /**************************************************************************/
-Adafruit_FXAS21002C::Adafruit_FXAS21002C(int32_t sensorID) {
+Adafruit_FXAS21002C::Adafruit_FXAS21002C(int32_t sensorID, byte addr) {
   _sensorID = sensorID;
+  _sensorAddr = addr;
 }
 
 /***************************************************************************
@@ -233,14 +235,14 @@ bool Adafruit_FXAS21002C::getEvent(sensors_event_t *event) {
   event->timestamp = millis();
 
   /* Read 7 bytes from the sensor */
-  Wire.beginTransmission((byte)FXAS21002C_ADDRESS);
+  Wire.beginTransmission((byte)_sensorAddr);
 #if ARDUINO >= 100
   Wire.write(GYRO_REGISTER_STATUS | 0x80);
 #else
   Wire.send(GYRO_REGISTER_STATUS | 0x80);
 #endif
   Wire.endTransmission();
-  Wire.requestFrom((byte)FXAS21002C_ADDRESS, (byte)7);
+  Wire.requestFrom((byte)_sensorAddr, (byte)7);
 
 #if ARDUINO >= 100
   uint8_t status = Wire.read();

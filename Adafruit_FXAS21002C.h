@@ -33,7 +33,7 @@
     I2C ADDRESS/BITS AND SETTINGS
     -----------------------------------------------------------------------*/
 /** 7-bit address for this sensor */
-#define FXAS21002C_ADDRESS (0x21) // 0100001
+// #define FXAS21002C_ADDRESS (0x21) // 0100001
 /** Device ID for this sensor (used as a sanity check during init) */
 #define FXAS21002C_ID (0xD7) // 1101 0111
 /** Gyroscope sensitivity at 250dps */
@@ -105,7 +105,7 @@ typedef struct gyroRawData_s {
 /**************************************************************************/
 class Adafruit_FXAS21002C : public Adafruit_Sensor {
 public:
-  Adafruit_FXAS21002C(int32_t sensorID = -1);
+  Adafruit_FXAS21002C(int32_t sensorID = -1, byte addr = 0x21);
 
   bool begin(gyroRange_t rng = GYRO_RANGE_250DPS);
   bool getEvent(sensors_event_t *event);
@@ -120,6 +120,7 @@ private:
   byte read8(byte reg);
   gyroRange_t _range;
   int32_t _sensorID;
+  byte _sensorAddr;
 };
 
 #endif
