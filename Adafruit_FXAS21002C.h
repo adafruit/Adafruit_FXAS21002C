@@ -20,13 +20,10 @@
 #ifndef __FXAS21002C_H__
 #define __FXAS21002C_H__
 
-#if (ARDUINO >= 100)
-#include "Arduino.h"
-#else
-#include "WProgram.h"
-#endif
-
+#include <Adafruit_BusIO_Register.h>
+#include <Adafruit_I2CDevice.h>
 #include <Adafruit_Sensor.h>
+#include <Arduino.h>
 #include <Wire.h>
 
 /*=========================================================================
@@ -105,9 +102,8 @@ typedef struct gyroRawData_s {
 /**************************************************************************/
 class Adafruit_FXAS21002C : public Adafruit_Sensor {
 public:
-  Adafruit_FXAS21002C(int32_t sensorID = -1, byte addr = 0x21);
-
-  bool begin(gyroRange_t rng = GYRO_RANGE_250DPS);
+  Adafruit_FXAS21002C(int32_t sensorID = -1);
+  bool begin(uint8_t addr = 0x21, TwoWire *wire = &Wire);
   bool getEvent(sensors_event_t *event);
   void getSensor(sensor_t *sensor);
   void standby(boolean standby);
@@ -115,12 +111,13 @@ public:
   /*! Raw gyroscope values from last sensor read */
   gyroRawData_t raw;
 
+protected:
+  Adafruit_I2CDevice *i2c_dev = NULL; ///< Pointer to I2C bus interface
+
 private:
-  void write8(byte reg, byte value);
-  byte read8(byte reg);
+  bool initialize();
   gyroRange_t _range;
   int32_t _sensorID;
-  byte _sensorAddr;
 };
 
 #endif

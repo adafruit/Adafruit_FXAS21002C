@@ -32,16 +32,8 @@
  * MIT license, all text here must be included in any redistribution.
  *
  */
-#if ARDUINO >= 100
-#include "Arduino.h"
-#else
-#include "WProgram.h"
-#endif
-
-#include <Wire.h>
-#include <limits.h>
-
 #include "Adafruit_FXAS21002C.h"
+#include <limits.h>
 
 /***************************************************************************
  PRIVATE FUNCTIONS
@@ -49,49 +41,31 @@
 
 /**************************************************************************/
 /*!
-    @brief  Abstract away platform differences in Arduino wire library
-    @param reg The register address to write to
-    @param value The value to write to the specified register
+     @brief  Initializes the hardware to a default state.
+
+     @return True if the device was successfully initialized, otherwise false.
 */
 /**************************************************************************/
-void Adafruit_FXAS21002C::write8(byte reg, byte value) {
-  Wire.beginTransmission(_sensorAddr);
-#if ARDUINO >= 100
-  Wire.write((uint8_t)reg);
-  Wire.write((uint8_t)value);
-#else
-  Wire.send(reg);
-  Wire.send(value);
-#endif
-  Wire.endTransmission();
-}
+bool Adafruit_FXAS21002C::initialize() {
+  Adafruit_BusIO_Register CTRL_REG0(i2c_dev, GYRO_REGISTER_CTRL_REG0);
+  Adafruit_BusIO_Register CTRL_REG1(i2c_dev, GYRO_REGISTER_CTRL_REG1);
 
-/**************************************************************************/
-/*!
-    @brief  Abstract away platform differences in Arduino wire library
-    @param reg The register address to read from
-    @returns The byte read from the I2C bus at the specified reg
-*/
-/**************************************************************************/
-byte Adafruit_FXAS21002C::read8(byte reg) {
-  byte value;
+  /* Set the range the an appropriate value */
+  _range = GYRO_RANGE_250DPS;
 
-  Wire.beginTransmission((byte)_sensorAddr);
-#if ARDUINO >= 100
-  Wire.write((uint8_t)reg);
-#else
-  Wire.send(reg);
-#endif
-  if (Wire.endTransmission(false) != 0)
-    return 0;
-  Wire.requestFrom((byte)_sensorAddr, (byte)1);
-#if ARDUINO >= 100
-  value = Wire.read();
-#else
-  value = Wire.receive();
-#endif
+  /* Clear the raw sensor data */
+  raw.x = 0;
+  raw.y = 0;
+  raw.z = 0;
 
-  return value;
+  /* Reset then switch to active mode with 100Hz output */
+  CTRL_REG1.write(0x00);   // Standby
+  CTRL_REG1.write(1 << 6); // Reset
+  CTRL_REG0.write(0x03);   // Set sensitivity
+  CTRL_REG1.write(0x0E);   // Active
+  delay(100);              // 60ms + 1/ODR
+
+  return true;
 }
 
 /***************************************************************************
@@ -104,12 +78,10 @@ byte Adafruit_FXAS21002C::read8(byte reg) {
             a unique ID to the gyroscope for logging purposes.
 
     @param sensorID The unique ID to associate with the gyroscope.
-    @param addr The I2C address of the sensor.
 */
 /**************************************************************************/
-Adafruit_FXAS21002C::Adafruit_FXAS21002C(int32_t sensorID, byte addr) {
+Adafruit_FXAS21002C::Adafruit_FXAS21002C(int32_t sensorID) {
   _sensorID = sensorID;
-  _sensorAddr = addr;
 }
 
 /***************************************************************************
@@ -120,91 +92,23 @@ Adafruit_FXAS21002C::Adafruit_FXAS21002C(int32_t sensorID, byte addr) {
 /*!
     @brief  Setup the HW
 
-    @param  rng
-            The range to set for the gyroscope, based on gyroRange_t
+    @param addr The I2C address of the sensor.
+    @param wire Pointer to Wire instance
 
     @return True if the device was successfully initialized, otherwise false.
 */
 /**************************************************************************/
-bool Adafruit_FXAS21002C::begin(gyroRange_t rng) {
-  /* Enable I2C */
-  Wire.begin();
+bool Adafruit_FXAS21002C::begin(uint8_t addr, TwoWire *wire) {
 
-  /* Set the range the an appropriate value */
-  _range = rng;
-
-  /* Clear the raw sensor data */
-  raw.x = 0;
-  raw.y = 0;
-  raw.z = 0;
-
-  /* Make sure we have the correct chip ID since this checks
-     for correct address and that the IC is properly connected */
-  uint8_t id = read8(GYRO_REGISTER_WHO_AM_I);
-  // Serial.print("WHO AM I? 0x"); Serial.println(id, HEX);
-  if (id != FXAS21002C_ID) {
+  i2c_dev = new Adafruit_I2CDevice(addr, wire);
+  if (!i2c_dev->begin())
     return false;
-  }
 
-  /* Set CTRL_REG1 (0x13)
-   ====================================================================
-   BIT  Symbol    Description                                   Default
-   ---  ------    --------------------------------------------- -------
-     6  RESET     Reset device on 1                                   0
-     5  ST        Self test enabled on 1                              0
-   4:2  DR        Output data rate                                  000
-                  000 = 800 Hz
-                  001 = 400 Hz
-                  010 = 200 Hz
-                  011 = 100 Hz
-                  100 = 50 Hz
-                  101 = 25 Hz
-                  110 = 12.5 Hz
-                  111 = 12.5 Hz
-     1  ACTIVE    Standby(0)/Active(1)                                0
-     0  READY     Standby(0)/Ready(1)                                 0
-  */
+  Adafruit_BusIO_Register WHO_AM_I(i2c_dev, GYRO_REGISTER_WHO_AM_I);
+  if (WHO_AM_I.read() != FXAS21002C_ID)
+    return false;
 
-  /* Set CTRL_REG0 (0x0D)  Default value 0x00
-  =====================================================================
-  BIT  Symbol     Description                                   Default
-  7:6  BW         cut-off frequency of low-pass filter               00
-    5  SPIW       SPI interface mode selection                        0
-  4:3  SEL        High-pass filter cutoff frequency selection        00
-    2  HPF_EN     High-pass filter enable                             0
-  1:0  FS         Full-scale range selection
-                  00 = +-2000 dps
-                  01 = +-1000 dps
-                  10 = +-500 dps
-                  11 = +-250 dps
-  The bit fields in CTRL_REG0 should be changed only in Standby or Ready modes.
-  */
-
-  uint8_t ctrlReg0 = 0x00;
-
-  switch (_range) {
-  case GYRO_RANGE_250DPS:
-    ctrlReg0 = 0x03;
-    break;
-  case GYRO_RANGE_500DPS:
-    ctrlReg0 = 0x02;
-    break;
-  case GYRO_RANGE_1000DPS:
-    ctrlReg0 = 0x01;
-    break;
-  case GYRO_RANGE_2000DPS:
-    ctrlReg0 = 0x00;
-    break;
-  }
-
-  /* Reset then switch to active mode with 100Hz output */
-  write8(GYRO_REGISTER_CTRL_REG1, 0x00);     // Standby
-  write8(GYRO_REGISTER_CTRL_REG1, (1 << 6)); // Reset
-  write8(GYRO_REGISTER_CTRL_REG0, ctrlReg0); // Set sensitivity
-  write8(GYRO_REGISTER_CTRL_REG1, 0x0E);     // Active
-  delay(100);                                // 60 ms + 1/ODR
-
-  return true;
+  return initialize();
 }
 
 /**************************************************************************/
@@ -219,7 +123,7 @@ bool Adafruit_FXAS21002C::begin(gyroRange_t rng) {
 */
 /**************************************************************************/
 bool Adafruit_FXAS21002C::getEvent(sensors_event_t *event) {
-  bool readingValid = false;
+  // bool readingValid = false;
 
   /* Clear the event */
   memset(event, 0, sizeof(sensors_event_t));
@@ -235,37 +139,14 @@ bool Adafruit_FXAS21002C::getEvent(sensors_event_t *event) {
   event->timestamp = millis();
 
   /* Read 7 bytes from the sensor */
-  Wire.beginTransmission((byte)_sensorAddr);
-#if ARDUINO >= 100
-  Wire.write(GYRO_REGISTER_STATUS | 0x80);
-#else
-  Wire.send(GYRO_REGISTER_STATUS | 0x80);
-#endif
-  Wire.endTransmission();
-  Wire.requestFrom((byte)_sensorAddr, (byte)7);
-
-#if ARDUINO >= 100
-  uint8_t status = Wire.read();
-  uint8_t xhi = Wire.read();
-  uint8_t xlo = Wire.read();
-  uint8_t yhi = Wire.read();
-  uint8_t ylo = Wire.read();
-  uint8_t zhi = Wire.read();
-  uint8_t zlo = Wire.read();
-#else
-  uint8_t status = Wire.receive();
-  uint8_t xhi = Wire.receive();
-  uint8_t xlo = Wire.receive();
-  uint8_t yhi = Wire.receive();
-  uint8_t ylo = Wire.receive();
-  uint8_t zhi = Wire.receive();
-  uint8_t zlo = Wire.receive();
-#endif
+  uint8_t buffer[7];
+  buffer[0] = GYRO_REGISTER_STATUS;
+  i2c_dev->write_then_read(buffer, 1, buffer, 7);
 
   /* Shift values to create properly formed integer */
-  event->gyro.x = (int16_t)((xhi << 8) | xlo);
-  event->gyro.y = (int16_t)((yhi << 8) | ylo);
-  event->gyro.z = (int16_t)((zhi << 8) | zlo);
+  event->gyro.x = (int16_t)((buffer[1] << 8) | buffer[2]);
+  event->gyro.y = (int16_t)((buffer[3] << 8) | buffer[4]);
+  event->gyro.z = (int16_t)((buffer[5] << 8) | buffer[6]);
 
   /* Assign raw values in case someone needs them */
   raw.x = event->gyro.x;
@@ -336,16 +217,13 @@ void Adafruit_FXAS21002C::getSensor(sensor_t *sensor) {
 */
 /**************************************************************************/
 void Adafruit_FXAS21002C::standby(boolean standby) {
+  Adafruit_BusIO_Register CTRL_REG1(i2c_dev, GYRO_REGISTER_CTRL_REG1);
+  Adafruit_BusIO_RegisterBits active_bit(&CTRL_REG1, 1, 1);
 
-  uint8_t reg1 = read8(GYRO_REGISTER_CTRL_REG1);
   if (standby) {
-    reg1 &= ~(0x03);
-  } else {
-    reg1 |= (0x03);
-  }
-  write8(GYRO_REGISTER_CTRL_REG1, reg1);
-
-  if (!standby) {
+    active_bit.write(0);
     delay(100);
+  } else {
+    active_bit.write(1);
   }
 }
