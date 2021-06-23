@@ -61,6 +61,7 @@ $(function() {
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-attribs">Public Attributes</a> &#124;
+<a href="#pro-attribs">Protected Attributes</a> &#124;
 <a href="class_adafruit___f_x_a_s21002_c-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">Adafruit_FXAS21002C Class Reference</div>  </div>
@@ -82,12 +83,12 @@ Inheritance diagram for Adafruit_FXAS21002C:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a643aecd2215c6adf06f0a2b0cf3535a4"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_adafruit___f_x_a_s21002_c.html#a643aecd2215c6adf06f0a2b0cf3535a4">Adafruit_FXAS21002C</a> (int32_t sensorID=-1, byte addr=0x21)</td></tr>
-<tr class="memdesc:a643aecd2215c6adf06f0a2b0cf3535a4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Instantiates a new <a class="el" href="class_adafruit___f_x_a_s21002_c.html" title="Unified sensor driver for the Adafruit FXAS21002C breakout. ">Adafruit_FXAS21002C</a> class, including assigning a unique ID to the gyroscope for logging purposes.  <a href="#a643aecd2215c6adf06f0a2b0cf3535a4">More...</a><br /></td></tr>
-<tr class="separator:a643aecd2215c6adf06f0a2b0cf3535a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a818719cf9b886b1bec7314f9070ece32"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_adafruit___f_x_a_s21002_c.html#a818719cf9b886b1bec7314f9070ece32">begin</a> (<a class="el" href="_adafruit___f_x_a_s21002_c_8h.html#a57b9f32344ee50c70bebb35d2d5865ff">gyroRange_t</a> rng=<a class="el" href="_adafruit___f_x_a_s21002_c_8h.html#a57b9f32344ee50c70bebb35d2d5865ffa48e989836555c00f1ef22f496e3ed253">GYRO_RANGE_250DPS</a>)</td></tr>
-<tr class="memdesc:a818719cf9b886b1bec7314f9070ece32"><td class="mdescLeft">&#160;</td><td class="mdescRight">Setup the HW.  <a href="#a818719cf9b886b1bec7314f9070ece32">More...</a><br /></td></tr>
-<tr class="separator:a818719cf9b886b1bec7314f9070ece32"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab70f2d06df57966b07d9b3fbdaeabaf5"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_adafruit___f_x_a_s21002_c.html#ab70f2d06df57966b07d9b3fbdaeabaf5">Adafruit_FXAS21002C</a> (int32_t sensorID=-1)</td></tr>
+<tr class="memdesc:ab70f2d06df57966b07d9b3fbdaeabaf5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Instantiates a new <a class="el" href="class_adafruit___f_x_a_s21002_c.html" title="Unified sensor driver for the Adafruit FXAS21002C breakout. ">Adafruit_FXAS21002C</a> class, including assigning a unique ID to the gyroscope for logging purposes.  <a href="#ab70f2d06df57966b07d9b3fbdaeabaf5">More...</a><br /></td></tr>
+<tr class="separator:ab70f2d06df57966b07d9b3fbdaeabaf5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af3f96b246e27abdafa5fef49d8d4500c"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_adafruit___f_x_a_s21002_c.html#af3f96b246e27abdafa5fef49d8d4500c">begin</a> (uint8_t addr=0x21, TwoWire *wire=&amp;Wire)</td></tr>
+<tr class="memdesc:af3f96b246e27abdafa5fef49d8d4500c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Setup the HW.  <a href="#af3f96b246e27abdafa5fef49d8d4500c">More...</a><br /></td></tr>
+<tr class="separator:af3f96b246e27abdafa5fef49d8d4500c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a991299516770232cc6529a2758857d51"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_adafruit___f_x_a_s21002_c.html#a991299516770232cc6529a2758857d51">getEvent</a> (sensors_event_t *event)</td></tr>
 <tr class="memdesc:a991299516770232cc6529a2758857d51"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the most recent sensor event.  <a href="#a991299516770232cc6529a2758857d51">More...</a><br /></td></tr>
 <tr class="separator:a991299516770232cc6529a2758857d51"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -102,12 +103,19 @@ Public Member Functions</h2></td></tr>
 Public Attributes</h2></td></tr>
 <tr class="memitem:a5cbbcb6160310457747c81d283aa7c96"><td class="memItemLeft" align="right" valign="top"><a class="el" href="_adafruit___f_x_a_s21002_c_8h.html#a5d274a8a35452c541e61474480c49264">gyroRawData_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_adafruit___f_x_a_s21002_c.html#a5cbbcb6160310457747c81d283aa7c96">raw</a></td></tr>
 <tr class="separator:a5cbbcb6160310457747c81d283aa7c96"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
+Protected Attributes</h2></td></tr>
+<tr class="memitem:a751f887f0b00c5904c7de51f9e41d089"><td class="memItemLeft" align="right" valign="top"><a id="a751f887f0b00c5904c7de51f9e41d089"></a>
+Adafruit_I2CDevice *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_adafruit___f_x_a_s21002_c.html#a751f887f0b00c5904c7de51f9e41d089">i2c_dev</a> = NULL</td></tr>
+<tr class="memdesc:a751f887f0b00c5904c7de51f9e41d089"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointer to I2C bus interface. <br /></td></tr>
+<tr class="separator:a751f887f0b00c5904c7de51f9e41d089"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Unified sensor driver for the Adafruit FXAS21002C breakout. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a643aecd2215c6adf06f0a2b0cf3535a4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a643aecd2215c6adf06f0a2b0cf3535a4">&#9670;&nbsp;</a></span>Adafruit_FXAS21002C()</h2>
+<a id="ab70f2d06df57966b07d9b3fbdaeabaf5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab70f2d06df57966b07d9b3fbdaeabaf5">&#9670;&nbsp;</a></span>Adafruit_FXAS21002C()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -116,13 +124,40 @@ Public Attributes</h2></td></tr>
           <td class="memname">Adafruit_FXAS21002C::Adafruit_FXAS21002C </td>
           <td>(</td>
           <td class="paramtype">int32_t&#160;</td>
-          <td class="paramname"><em>sensorID</em> = <code>-1</code>, </td>
+          <td class="paramname"><em>sensorID</em> = <code>-1</code></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Instantiates a new <a class="el" href="class_adafruit___f_x_a_s21002_c.html" title="Unified sensor driver for the Adafruit FXAS21002C breakout. ">Adafruit_FXAS21002C</a> class, including assigning a unique ID to the gyroscope for logging purposes. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">sensorID</td><td>The unique ID to associate with the gyroscope. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="af3f96b246e27abdafa5fef49d8d4500c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af3f96b246e27abdafa5fef49d8d4500c">&#9670;&nbsp;</a></span>begin()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Adafruit_FXAS21002C::begin </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>addr</em> = <code>0x21</code>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">byte&#160;</td>
-          <td class="paramname"><em>addr</em> = <code>0x21</code>&#160;</td>
+          <td class="paramtype">TwoWire *&#160;</td>
+          <td class="paramname"><em>wire</em> = <code>&amp;Wire</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -132,38 +167,11 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Instantiates a new <a class="el" href="class_adafruit___f_x_a_s21002_c.html" title="Unified sensor driver for the Adafruit FXAS21002C breakout. ">Adafruit_FXAS21002C</a> class, including assigning a unique ID to the gyroscope for logging purposes. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">sensorID</td><td>The unique ID to associate with the gyroscope. </td></tr>
-    <tr><td class="paramname">addr</td><td>The I2C address of the sensor. </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<h2 class="groupheader">Member Function Documentation</h2>
-<a id="a818719cf9b886b1bec7314f9070ece32"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a818719cf9b886b1bec7314f9070ece32">&#9670;&nbsp;</a></span>begin()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool Adafruit_FXAS21002C::begin </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="_adafruit___f_x_a_s21002_c_8h.html#a57b9f32344ee50c70bebb35d2d5865ff">gyroRange_t</a>&#160;</td>
-          <td class="paramname"><em>rng</em> = <code><a class="el" href="_adafruit___f_x_a_s21002_c_8h.html#a57b9f32344ee50c70bebb35d2d5865ffa48e989836555c00f1ef22f496e3ed253">GYRO_RANGE_250DPS</a></code></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
 <p>Setup the HW. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">rng</td><td>The range to set for the gyroscope, based on gyroRange_t</td></tr>
+    <tr><td class="paramname">addr</td><td>The I2C address of the sensor. </td></tr>
+    <tr><td class="paramname">wire</td><td>Pointer to Wire instance</td></tr>
   </table>
   </dd>
 </dl>
