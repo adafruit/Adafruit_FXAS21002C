@@ -218,7 +218,7 @@ void Adafruit_FXAS21002C::getSensor(sensor_t *sensor) {
 /**************************************************************************/
 void Adafruit_FXAS21002C::standby(boolean standby) {
   Adafruit_BusIO_Register CTRL_REG1(i2c_dev, GYRO_REGISTER_CTRL_REG1);
-  Adafruit_BusIO_RegisterBits active_bit(&CTRL_REG1, 1, 2);
+  Adafruit_BusIO_RegisterBits active_bit(&CTRL_REG1, 2, 0);
 
   if (standby) {
     active_bit.write(0x00);
