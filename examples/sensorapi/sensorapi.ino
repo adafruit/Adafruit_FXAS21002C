@@ -49,6 +49,9 @@ void setup(void) {
       ;
   }
 
+  /* Set gyro range. (optional, default is 250 dps) */
+  // gyro.setRange(GYRO_RANGE_2000DPS);
+
   /* Display some basic information on this sensor */
   displaySensorDetails();
 }
