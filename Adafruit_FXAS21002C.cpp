@@ -212,6 +212,31 @@ void Adafruit_FXAS21002C::getSensor(sensor_t *sensor) {
 
 /**************************************************************************/
 /*!
+    @brief  Set the gyroscope full scale range.
+    @param  range gyroscope full scane range
+*/
+/**************************************************************************/
+void Adafruit_FXAS21002C::setRange(gyroRange_t range) {
+  Adafruit_BusIO_Register CTRL_REG0(i2c_dev, GYRO_REGISTER_CTRL_REG0);
+  Adafruit_BusIO_RegisterBits range_bits(&CTRL_REG0, 2, 0);
+
+  standby(true);
+  range_bits.write(range);
+  standby(false);
+
+  _range = range;
+}
+
+/**************************************************************************/
+/*!
+    @brief  Get the gyroscope full scale range.
+    @return  gyroscope full scane range
+*/
+/**************************************************************************/
+gyroRange_t Adafruit_FXAS21002C::getRange() { return _range; }
+
+/**************************************************************************/
+/*!
     @brief  Puts devince into/out of standby mode
     @param  standby Whether we want to go into standby!
 */

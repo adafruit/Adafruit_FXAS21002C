@@ -108,8 +108,9 @@ public:
   void getSensor(sensor_t *sensor);
   void standby(boolean standby);
 
-  /*! Raw gyroscope values from last sensor read */
-  gyroRawData_t raw;
+  void setRange(gyroRange_t range);
+  gyroRange_t getRange();
+  gyroRawData_t raw; ///< Raw gyroscope values from last sensor read
 
 protected:
   Adafruit_I2CDevice *i2c_dev = NULL; ///< Pointer to I2C bus interface
