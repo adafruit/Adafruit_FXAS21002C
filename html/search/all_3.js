@@ -1,6 +1,7 @@
 var searchData=
 [
   ['getevent',['getEvent',['../class_adafruit___f_x_a_s21002_c.html#a991299516770232cc6529a2758857d51',1,'Adafruit_FXAS21002C']]],
+  ['getrange',['getRange',['../class_adafruit___f_x_a_s21002_c.html#a00ec1a3c449f3eee045f00594136e5df',1,'Adafruit_FXAS21002C']]],
   ['getsensor',['getSensor',['../class_adafruit___f_x_a_s21002_c.html#a5c536d57b7360887b87272699adfa306',1,'Adafruit_FXAS21002C']]],
   ['gyro_5frange_5f1000dps',['GYRO_RANGE_1000DPS',['../_adafruit___f_x_a_s21002_c_8h.html#a57b9f32344ee50c70bebb35d2d5865ffa1fdbddf7dfa338f2327022bfc5961657',1,'Adafruit_FXAS21002C.h']]],
   ['gyro_5frange_5f2000dps',['GYRO_RANGE_2000DPS',['../_adafruit___f_x_a_s21002_c_8h.html#a57b9f32344ee50c70bebb35d2d5865ffa1c12697ff4f35e609688d5bdd873de02',1,'Adafruit_FXAS21002C.h']]],
