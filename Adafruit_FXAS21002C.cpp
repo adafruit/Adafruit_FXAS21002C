@@ -85,6 +85,15 @@ Adafruit_FXAS21002C::Adafruit_FXAS21002C(int32_t sensorID) {
 }
 
 /***************************************************************************
+ DESTRUCTOR
+ ***************************************************************************/
+
+Adafruit_FXAS21002C::~Adafruit_FXAS21002C() {
+  if (i2c_dev)
+    delete i2c_dev;
+}
+
+/***************************************************************************
  PUBLIC FUNCTIONS
  ***************************************************************************/
 
@@ -100,6 +109,8 @@ Adafruit_FXAS21002C::Adafruit_FXAS21002C(int32_t sensorID) {
 /**************************************************************************/
 bool Adafruit_FXAS21002C::begin(uint8_t addr, TwoWire *wire) {
 
+  if (i2c_dev)
+    delete i2c_dev;
   i2c_dev = new Adafruit_I2CDevice(addr, wire);
   if (!i2c_dev->begin())
     return false;
