@@ -103,6 +103,7 @@ typedef struct gyroRawData_s {
 class Adafruit_FXAS21002C : public Adafruit_Sensor {
 public:
   Adafruit_FXAS21002C(int32_t sensorID = -1);
+  ~Adafruit_FXAS21002C();
   bool begin(uint8_t addr = 0x21, TwoWire *wire = &Wire);
   bool getEvent(sensors_event_t *event);
   void getSensor(sensor_t *sensor);
