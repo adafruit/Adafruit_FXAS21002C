@@ -150,7 +150,7 @@ bool Adafruit_FXAS21002C::getEvent(sensors_event_t *event) {
   event->timestamp = millis();
 
   /* Read 7 bytes from the sensor */
-  uint8_t buffer[7];
+  uint8_t buffer[7] = {0};
   buffer[0] = GYRO_REGISTER_STATUS;
   i2c_dev->write_then_read(buffer, 1, buffer, 7);
 
@@ -224,7 +224,7 @@ void Adafruit_FXAS21002C::getSensor(sensor_t *sensor) {
 /**************************************************************************/
 /*!
     @brief  Set the gyroscope full scale range.
-    @param  range gyroscope full scane range
+    @param  range gyroscope full scale range
 */
 /**************************************************************************/
 void Adafruit_FXAS21002C::setRange(gyroRange_t range) {
@@ -241,14 +241,14 @@ void Adafruit_FXAS21002C::setRange(gyroRange_t range) {
 /**************************************************************************/
 /*!
     @brief  Get the gyroscope full scale range.
-    @return  gyroscope full scane range
+    @return  gyroscope full scale range
 */
 /**************************************************************************/
 gyroRange_t Adafruit_FXAS21002C::getRange() { return _range; }
 
 /**************************************************************************/
 /*!
-    @brief  Puts devince into/out of standby mode
+    @brief  Puts device into/out of standby mode
     @param  standby Whether we want to go into standby!
 */
 /**************************************************************************/
