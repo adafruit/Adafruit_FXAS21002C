@@ -61,10 +61,9 @@ bool Adafruit_FXAS21002C::initialize() {
   /* Reset then switch to active mode with 100Hz output */
   CTRL_REG1.write(0x00);   // Standby
   CTRL_REG1.write(1 << 6); // Reset
-  CTRL_REG0.write(
-      0x03); // Set sensitivity which corresponds to the range of +-250 dps
-  CTRL_REG1.write(0x0E); // Active
-  delay(100);            // 60ms + 1/ODR
+  CTRL_REG0.write(0x03);   // Set full scale range to +-250 dps
+  CTRL_REG1.write(0x0E);   // Active
+  delay(100);              // 60ms + 1/ODR
 
   return true;
 }
