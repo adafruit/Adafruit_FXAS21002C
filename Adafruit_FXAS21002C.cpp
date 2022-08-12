@@ -61,7 +61,7 @@ bool Adafruit_FXAS21002C::initialize() {
   /* Reset then switch to active mode with 100Hz output */
   CTRL_REG1.write(0x00);   // Standby
   CTRL_REG1.write(1 << 6); // Reset
-  CTRL_REG0.write(0x03);   // Set sensitivity
+  CTRL_REG0.write(0x03);   // Set sensitivity which corresponds to the range of +-250 dps
   CTRL_REG1.write(0x0E);   // Active
   delay(100);              // 60ms + 1/ODR
 
@@ -232,7 +232,24 @@ void Adafruit_FXAS21002C::setRange(gyroRange_t range) {
   Adafruit_BusIO_RegisterBits range_bits(&CTRL_REG0, 2, 0);
 
   standby(true);
-  range_bits.write(range);
+
+  // write FS[1:0] bits (bits controlling the full scale range) with correct values according to page 40 of the datasheet
+  switch( range )
+  {
+    case GYRO_RANGE_250DPS:
+      range_bits.write(0b11);
+      break;
+    case GYRO_RANGE_500DPS:
+      range_bits.write(0b10);
+      break;
+    case GYRO_RANGE_1000DPS:
+      range_bits.write(0b01);
+      break;
+    case GYRO_RANGE_2000DPS:
+      range_bits.write(0b00);
+      break;
+  }
+
   standby(false);
 
   _range = range;
