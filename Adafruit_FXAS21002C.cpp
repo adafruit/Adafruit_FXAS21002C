@@ -281,12 +281,11 @@ void Adafruit_FXAS21002C::standby(boolean standby) {
   }
 }
 
-
 /**************************************************************************/
 /*!
     @brief  Configures the device with certain output data rate(ODR)
             Currently supports ODRs: 8000Hz, 400Hz, 200Hz, 100Hz, 50Hz, 25Hz
-    @param   ODR : the output data rate to be set to the gyroscope!
+    @param   ODR : the output data rate to be set to the gyroscope
 */
 /**************************************************************************/
 void Adafruit_FXAS21002C::setODR(gyroODR_t ODR) {
