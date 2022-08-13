@@ -280,3 +280,77 @@ void Adafruit_FXAS21002C::standby(boolean standby) {
     active_bit.write(0x03);
   }
 }
+
+
+/**************************************************************************/
+/*!
+    @brief  Configures the device with certain output data rate(ODR)
+            Currently supports ODRs: 8000Hz, 400Hz, 200Hz, 100Hz, 50Hz, 25Hz
+    @param   ODR : the output data rate to be set to the gyroscope!
+*/
+/**************************************************************************/
+void Adafruit_FXAS21002C::setODR(gyroODR_t ODR) {
+  Adafruit_BusIO_Register CTRL_REG1(i2c_dev, GYRO_REGISTER_CTRL_REG1);
+  Adafruit_BusIO_RegisterBits datarate_bits(&CTRL_REG1, 3, 2);
+
+  /* CTRL_REG1 should only be set in Standby or Ready mode. First enter Standby
+   * mode */
+  standby(true);
+
+  switch (ODR) {
+  case GYRO_ODR_800HZ:
+    datarate_bits.write(0b000);
+    break;
+  case GYRO_ODR_400HZ:
+    datarate_bits.write(0b001);
+    break;
+  case GYRO_ODR_200HZ:
+    datarate_bits.write(0b010);
+    break;
+  case GYRO_ODR_100HZ:
+    datarate_bits.write(0b011);
+    break;
+  case GYRO_ODR_50HZ:
+    datarate_bits.write(0b100);
+    break;
+  case GYRO_ODR_25HZ:
+    datarate_bits.write(0b101);
+    break;
+  }
+  standby(false);
+}
+
+/**************************************************************************/
+/*!
+    @brief  Obtain the current output data rate(ODR) from the gyroscope's
+   register
+    @return The Output Data Rate(ODR) in Hz
+*/
+/**************************************************************************/
+gyroODR_t Adafruit_FXAS21002C::getODR() {
+  Adafruit_BusIO_Register CTRL_REG1(i2c_dev, GYRO_REGISTER_CTRL_REG1);
+  Adafruit_BusIO_RegisterBits datarate_bits(&CTRL_REG1, 3, 2);
+
+  /* Read the current value in the Output Data Rate(ODR) bits and return the
+   * corresponding ODR in Hz */
+  switch (datarate_bits.read()) {
+  case 0b000:
+    return GYRO_ODR_800HZ;
+    break;
+  case 0b001:
+    return GYRO_ODR_400HZ;
+    break;
+  case 0b010:
+    return GYRO_ODR_200HZ;
+    break;
+  case 0b011:
+    return GYRO_ODR_100HZ;
+    break;
+  case 0b100:
+    return GYRO_ODR_50HZ;
+    break;
+  case 0b101:
+    return GYRO_ODR_25HZ;
+    break;
+  }
+}

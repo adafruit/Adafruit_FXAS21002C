@@ -83,6 +83,22 @@ typedef enum {
 /*=========================================================================*/
 
 /*=========================================================================
+    OPTIONAL OUTPUT DATA RATE SETTINGS
+    -----------------------------------------------------------------------*/
+/*!
+    Enum to define valid gyroscope output data rate values(ODR)
+*/
+typedef enum {
+  GYRO_ODR_800HZ = 800, /**< 800Hz */
+  GYRO_ODR_400HZ = 400, /**< 400Hz */
+  GYRO_ODR_200HZ = 200, /**< 200Hz */
+  GYRO_ODR_100HZ = 100, /**< 100Hz */
+  GYRO_ODR_50HZ = 50,   /**<  50Hz */
+  GYRO_ODR_25HZ = 25,   /**<  25Hz */
+} gyroODR_t;
+/*=========================================================================*/
+
+/*=========================================================================
     RAW GYROSCOPE DATA TYPE
     -----------------------------------------------------------------------*/
 /*!
@@ -110,7 +126,9 @@ public:
   void standby(boolean standby);
 
   void setRange(gyroRange_t range);
+  void setODR(gyroODR_t ODR);
   gyroRange_t getRange();
+  gyroODR_t getODR();
   gyroRawData_t raw; ///< Raw gyroscope values from last sensor read
 
 protected:
