@@ -353,3 +353,4 @@ gyroODR_t Adafruit_FXAS21002C::getODR() {
     break;
   }
 }
+
