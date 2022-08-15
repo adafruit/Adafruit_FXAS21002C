@@ -63,6 +63,7 @@ bool Adafruit_FXAS21002C::initialize() {
   CTRL_REG1.write(1 << 6); // Reset
   CTRL_REG0.write(0x03);   // Set full scale range to +-250 dps
   CTRL_REG1.write(0x0E);   // Active
+  _ODR = GYRO_ODR_100HZ;   // Update global ODR variable
   delay(100);              // 60ms + 1/ODR
 
   return true;
@@ -334,23 +335,31 @@ gyroODR_t Adafruit_FXAS21002C::getODR() {
    * corresponding ODR in Hz */
   switch (datarate_bits.read()) {
   case 0b000:
+    _ODR = GYRO_ODR_800HZ;
     return GYRO_ODR_800HZ;
     break;
   case 0b001:
+    _ODR = GYRO_ODR_400HZ;
     return GYRO_ODR_400HZ;
     break;
   case 0b010:
+    _ODR = GYRO_ODR_200HZ;
     return GYRO_ODR_200HZ;
     break;
   case 0b011:
+    _ODR = GYRO_ODR_100HZ;
     return GYRO_ODR_100HZ;
     break;
   case 0b100:
+    _ODR = GYRO_ODR_50HZ;
     return GYRO_ODR_50HZ;
     break;
   case 0b101:
+    _ODR = GYRO_ODR_25HZ;
     return GYRO_ODR_25HZ;
+    break;
+  default:
+    return _ODR;
     break;
   }
 }
-

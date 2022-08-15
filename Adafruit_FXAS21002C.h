@@ -137,6 +137,7 @@ protected:
 private:
   bool initialize();
   gyroRange_t _range;
+  gyroODR_t _ODR;
   int32_t _sensorID;
 };
 
