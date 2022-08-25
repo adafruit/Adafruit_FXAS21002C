@@ -297,41 +297,37 @@ void Adafruit_FXAS21002C::setODR(float ODR) {
    * mode */
   standby(true);
 
-  switch (ODR) {
-  case GYRO_ODR_800HZ:
+  if(ODR == GYRO_ODR_800HZ) {
     datarate_bits.write(0b000);
     _ODR = ODR;
-    break;
-  case GYRO_ODR_400HZ:
+ }
+  else if(ODR == GYRO_ODR_400HZ) {
     datarate_bits.write(0b001);
     _ODR = ODR;
-    break;
-  case GYRO_ODR_200HZ:
+}
+  else if (ODR == GYRO_ODR_200HZ){
     datarate_bits.write(0b010);
     _ODR = ODR;
-    break;
-  case GYRO_ODR_100HZ:
-    datarate_bits.write(0b011);
+  }
+
+  else if(ODR == GYRO_ODR_100HZ){
+        datarate_bits.write(0b011);
     _ODR = ODR;
-    break;
-  case GYRO_ODR_50HZ:
-    datarate_bits.write(0b100);
+  }
+
+  else if(ODR == GYRO_ODR_50HZ){
+        datarate_bits.write(0b100);
     _ODR = ODR;
-    break;
-  case GYRO_ODR_25HZ:
-    datarate_bits.write(0b101);
+  }
+
+  else if(ODR == GYRO_ODR_25HZ){
+        datarate_bits.write(0b101);
     _ODR = ODR;
-    break;
-  case GYRO_ODR_12_5HZ:
+  }
+
+  else if (ODR == GYRO_ODR_12_5HZ){
     datarate_bits.write(0b110);
     _ODR = ODR;
-    break;
-  /*
-  The default case only occurs when the ODR does not fall into any of the valid
-  ODRs The invalid ODR will be ignored
-  */
-  default:
-    break;
   }
 
   standby(false);
