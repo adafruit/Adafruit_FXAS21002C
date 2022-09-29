@@ -61,7 +61,8 @@ bool Adafruit_FXAS21002C::initialize() {
   /* Reset then switch to active mode with 100Hz output */
   CTRL_REG1.write(0x00);   // Standby
   CTRL_REG1.write(1 << 6); // Reset
-  CTRL_REG0.write(0x03);   // Set sensitivity
+  CTRL_REG0.write(0x03);   // Set full scale range to +-250 dps
+  _ODR = GYRO_ODR_100HZ;   // Update global ODR variable
   CTRL_REG1.write(0x0E);   // Active
   delay(100);              // 60ms + 1/ODR
 
@@ -232,7 +233,24 @@ void Adafruit_FXAS21002C::setRange(gyroRange_t range) {
   Adafruit_BusIO_RegisterBits range_bits(&CTRL_REG0, 2, 0);
 
   standby(true);
-  range_bits.write(range);
+
+  /* write FS[1:0] bits (bits controlling the full scale range) with correct
+   * values according to page 40 of the datasheet */
+  switch (range) {
+  case GYRO_RANGE_250DPS:
+    range_bits.write(0b11);
+    break;
+  case GYRO_RANGE_500DPS:
+    range_bits.write(0b10);
+    break;
+  case GYRO_RANGE_1000DPS:
+    range_bits.write(0b01);
+    break;
+  case GYRO_RANGE_2000DPS:
+    range_bits.write(0b00);
+    break;
+  }
+
   standby(false);
 
   _range = range;
@@ -263,3 +281,49 @@ void Adafruit_FXAS21002C::standby(boolean standby) {
     active_bit.write(0x03);
   }
 }
+
+/**************************************************************************/
+/*!
+    @brief  Configures the device with certain output data rate(ODR)
+            Supports ODRs: 800.0Hz, 400.0Hz, 200.0Hz,
+   100.0Hz, 50.0Hz, 25.0Hz, 12.5Hz
+    @param   ODR : the output data rate to be set to the gyroscope
+*/
+/**************************************************************************/
+void Adafruit_FXAS21002C::setODR(float ODR) {
+  Adafruit_BusIO_Register CTRL_REG1(i2c_dev, GYRO_REGISTER_CTRL_REG1);
+  Adafruit_BusIO_RegisterBits datarate_bits(&CTRL_REG1, 3, 2);
+
+  /* CTRL_REG1 should only be set in Standby or Ready mode. First enter Standby
+   * mode */
+  standby(true);
+  /* _ODR is only updated if the input ODR is one of the valid ODRs */
+  if (ODR == GYRO_ODR_800HZ) {
+    datarate_bits.write(0b000);
+  } else if (ODR == GYRO_ODR_400HZ) {
+    datarate_bits.write(0b001);
+  } else if (ODR == GYRO_ODR_200HZ) {
+    datarate_bits.write(0b010);
+  } else if (ODR == GYRO_ODR_100HZ) {
+    datarate_bits.write(0b011);
+  } else if (ODR == GYRO_ODR_50HZ) {
+    datarate_bits.write(0b100);
+  } else if (ODR == GYRO_ODR_25HZ) {
+    datarate_bits.write(0b101);
+  } else if (ODR == GYRO_ODR_12_5HZ) {
+    datarate_bits.write(0b110);
+  }
+  // update internal _ODR variable. Note that this update happens regardless of
+  // the validity of ODR
+  _ODR = ODR;
+  standby(false);
+}
+
+/**************************************************************************/
+/*!
+    @brief  Obtain the current output data rate(ODR) from the gyroscope's
+   register
+    @return The Output Data Rate(ODR) in Hz
+*/
+/**************************************************************************/
+float Adafruit_FXAS21002C::getODR() { return _ODR; }

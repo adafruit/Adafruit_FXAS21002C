@@ -43,6 +43,17 @@
 #define GYRO_SENSITIVITY_2000DPS (0.0625F)
 /*=========================================================================*/
 
+/*!
+    Define valid gyroscope output data rate values(ODR)
+*/
+#define GYRO_ODR_800HZ (800.0f) /**< 800Hz */
+#define GYRO_ODR_400HZ (400.0f) /**< 400Hz */
+#define GYRO_ODR_200HZ (200.0f) /**< 200Hz */
+#define GYRO_ODR_100HZ (100.0f) /**< 100Hz */
+#define GYRO_ODR_50HZ (50.0f)   /**<  50Hz */
+#define GYRO_ODR_25HZ (25.0f)   /**<  25Hz */
+#define GYRO_ODR_12_5HZ (12.5f) /**< 12.5Hz*/
+
 /*=========================================================================
     REGISTERS
     -----------------------------------------------------------------------*/
@@ -110,7 +121,9 @@ public:
   void standby(boolean standby);
 
   void setRange(gyroRange_t range);
+  void setODR(float ODR);
   gyroRange_t getRange();
+  float getODR();
   gyroRawData_t raw; ///< Raw gyroscope values from last sensor read
 
 protected:
@@ -119,6 +132,7 @@ protected:
 private:
   bool initialize();
   gyroRange_t _range;
+  float _ODR;
   int32_t _sensorID;
 };
 
