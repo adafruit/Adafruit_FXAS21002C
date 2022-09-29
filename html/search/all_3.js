@@ -1,8 +1,16 @@
 var searchData=
 [
   ['getevent',['getEvent',['../class_adafruit___f_x_a_s21002_c.html#a991299516770232cc6529a2758857d51',1,'Adafruit_FXAS21002C']]],
+  ['getodr',['getODR',['../class_adafruit___f_x_a_s21002_c.html#a8a9e4fa74aaef9c2db01e4f522e2ed70',1,'Adafruit_FXAS21002C']]],
   ['getrange',['getRange',['../class_adafruit___f_x_a_s21002_c.html#a00ec1a3c449f3eee045f00594136e5df',1,'Adafruit_FXAS21002C']]],
   ['getsensor',['getSensor',['../class_adafruit___f_x_a_s21002_c.html#a5c536d57b7360887b87272699adfa306',1,'Adafruit_FXAS21002C']]],
+  ['gyro_5fodr_5f100hz',['GYRO_ODR_100HZ',['../_adafruit___f_x_a_s21002_c_8h.html#ab6a1a2b085bc0a9daba8b802cecc0fe3',1,'Adafruit_FXAS21002C.h']]],
+  ['gyro_5fodr_5f12_5f5hz',['GYRO_ODR_12_5HZ',['../_adafruit___f_x_a_s21002_c_8h.html#a3c74ad20227017ae0eb99787a58f13da',1,'Adafruit_FXAS21002C.h']]],
+  ['gyro_5fodr_5f200hz',['GYRO_ODR_200HZ',['../_adafruit___f_x_a_s21002_c_8h.html#aef27c7ab3c4737f87b9ab0059f392a1f',1,'Adafruit_FXAS21002C.h']]],
+  ['gyro_5fodr_5f25hz',['GYRO_ODR_25HZ',['../_adafruit___f_x_a_s21002_c_8h.html#aaa798cf70b58cd0907a83600e7bd6254',1,'Adafruit_FXAS21002C.h']]],
+  ['gyro_5fodr_5f400hz',['GYRO_ODR_400HZ',['../_adafruit___f_x_a_s21002_c_8h.html#aa1008c17e0330883a094a2eff65c9299',1,'Adafruit_FXAS21002C.h']]],
+  ['gyro_5fodr_5f50hz',['GYRO_ODR_50HZ',['../_adafruit___f_x_a_s21002_c_8h.html#a93d7374e03e3e299f08e1e065d53a740',1,'Adafruit_FXAS21002C.h']]],
+  ['gyro_5fodr_5f800hz',['GYRO_ODR_800HZ',['../_adafruit___f_x_a_s21002_c_8h.html#a6ed5b74444b3c12b68d7d4df67de4f17',1,'Adafruit_FXAS21002C.h']]],
   ['gyro_5frange_5f1000dps',['GYRO_RANGE_1000DPS',['../_adafruit___f_x_a_s21002_c_8h.html#a57b9f32344ee50c70bebb35d2d5865ffa1fdbddf7dfa338f2327022bfc5961657',1,'Adafruit_FXAS21002C.h']]],
   ['gyro_5frange_5f2000dps',['GYRO_RANGE_2000DPS',['../_adafruit___f_x_a_s21002_c_8h.html#a57b9f32344ee50c70bebb35d2d5865ffa1c12697ff4f35e609688d5bdd873de02',1,'Adafruit_FXAS21002C.h']]],
   ['gyro_5frange_5f250dps',['GYRO_RANGE_250DPS',['../_adafruit___f_x_a_s21002_c_8h.html#a57b9f32344ee50c70bebb35d2d5865ffa48e989836555c00f1ef22f496e3ed253',1,'Adafruit_FXAS21002C.h']]],
